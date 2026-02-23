@@ -78,12 +78,16 @@ multicollinearity that must be handled carefully.
 
 ![GLASSO Graph](images/glasso_graph.png)
 
-Using Graphical LASSO (λ = 0.1), a sparse conditional dependency network
-was estimated.
+The Graphical LASSO was applied with a regularization parameter λ = 0.1 to estimate a sparse precision matrix and uncover conditional dependencies between variables.
 
-Key insight: - Direct structural edge between **z and Mp** - Strong
-clique among photometric bands - Measurement errors form a separate
-cluster
+Unlike simple correlations, GLASSO identifies direct conditional relationships, removing spurious associations mediated by other variables.
+
+With this penalization level:
+
+- Only 22 edges were retained
+- The network became significantly more interpretable
+- Noise and weak connections were eliminated
+
 
 ------------------------------------------------------------------------
 
@@ -91,10 +95,26 @@ cluster
 
 ![Bayesian Network](images/bayesian_network.png)
 
-A directed acyclic graph (Hill Climbing + BIC) confirms:
+After estimating the undirected conditional structure with GLASSO, a **Directed Acyclic Graph (DAG)** was learned using:
 
--   Redshift acts as a primary driver of absolute magnitude
--   Photometric bands mediate secondary effects
+- Hill Climbing algorithm  
+- BIC score  
+- GLASSO-derived blacklist constraints  
+
+This step allowed us to move from simple *associations* to a structured representation of *directional dependencies* between variables.
+
+The DAG shows
+
+- **Directed influence from `z` to `Mp`**  
+  The orientation suggests that redshift acts as a driving variable in explaining intrinsic luminosity.  
+  While statistical direction does not imply physical causation, this result is fully consistent with cosmological interpretation.
+
+- **Photometric bands act as intermediate predictors**  
+  Variables such as `g_mag`, `r_mag`, and `z_mag` often appear between `z` and `Mp`, suggesting that spectral properties refine or mediate the luminosity–redshift relationship.  
+  This reflects how observed magnitudes across different wavelength bands relate to intrinsic brightness.
+
+- **Secondary roles for `ROSAT` and `FIRST`**  
+  Radio and X-ray luminosities contribute to the structure but do not dominate the primary dependency pathway between redshift and absolute magnitude.
 
 ------------------------------------------------------------------------
 
@@ -113,7 +133,7 @@ Across all models:
 > *(p < 2e-16)*.
 
 
-🚩 **For detailed statistical results and full methodological discussion, see [`report.pdf`](report.pdf).**
+### 🚩 **For detailed statistical results and full methodological discussion, see [`report.pdf`](report.pdf).**
 
 
 ------------------------------------------------------------------------
