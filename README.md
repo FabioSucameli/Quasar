@@ -133,7 +133,7 @@ Across all models:
 > *(p < 2e-16)*.
 
 
-### 🚩 **For detailed statistical results and full methodological discussion, see [`report.pdf`](report.pdf).**
+### 🚩 **For detailed statistical results and full methodological discussion, see [`Report.pdf`](Report.pdf).**
 
 
 ------------------------------------------------------------------------
